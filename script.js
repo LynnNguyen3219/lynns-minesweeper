@@ -301,7 +301,7 @@ function main() {
 
     createFieldButtons(view, state);
     initView(view, state);
-    handleGameEvents(view, state);
+    handleGameEvents(view, state, widthInput, heightInput, minesInput);
 }
 
 main();
