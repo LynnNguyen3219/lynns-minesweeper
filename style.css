@@ -32,7 +32,7 @@ body{
     background: #1d1c1c;
 }
 
-#reset, .menubutton, .paragraph{
+#reset, .menubutton, .paragraph, .checkbox{
     display: block;
     font-size: 23px;
     background: #d7d3d1;
@@ -84,6 +84,18 @@ a{
     border: 2px solid;
     padding-bottom: 20px;
     border-color: #fffefe #726a65 #726a65 #fffefe;
+}
+
+.checkbox{
+    height: 25px;
+    width: 25px;
+}
+
+.inline{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    margin: 5px;
 }
 
 #grid{
@@ -166,4 +178,17 @@ a{
 
 #grid button.value-8{
     color:#356873;
+}
+
+.userinputs{
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+    margin: 5px;
+}
+
+.userinputs input{
+    height: 20px;
+    width: 30px;
 }

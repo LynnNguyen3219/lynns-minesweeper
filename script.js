@@ -56,6 +56,8 @@ function updateMineNeighbors(state, mineX, mineY) {
 }
 
 function createFieldButtons(view, state) {
+    view.grid.innerHTML = '';
+
     const fragment = new DocumentFragment();
 
     const height = state.fields.length;
@@ -97,16 +99,15 @@ function initView(view, state) {
     }
 }
 
-function restartGame(view, state) {
+function restartGame(view, state, widthInput, heightInput, minesInput) {
     clearInterval(state.timerInterval);
 
-    const newState = initGameState({
-        width: state.fields[0].length,
-        height: state.fields.length,
-        minesCount: state.minesCount,
-    });
+    const newState = initGameState(
+        gridValues(widthInput, heightInput, minesInput)
+    );
 
     Object.assign(state, newState);
+    createFieldButtons(view, state);
     initView(view, state);
 }
 
@@ -125,9 +126,9 @@ function startTimer(view, state) {
     }, 1000);
 }
 
-function handleGameEvents(view, state) {
+function handleGameEvents(view, state, widthInput, heightInput, minesInput) {
     view.reset.addEventListener('click', () =>
-        restartGame(view, state)
+        restartGame(view, state, widthInput, heightInput, minesInput)
     );
     view.grid.addEventListener('contextmenu', (event) => 
         event.preventDefault()
@@ -160,7 +161,7 @@ function handleFieldFlag(view, state, button) {
 
     const isFlagged = button.classList.toggle('flagged');
 
-    state.minesleft += isFlagged ? -1 : 1;
+    state.minesLeft += isFlagged ? -1 : 1;
     view.minesLeft.innerText = `${state.minesLeft}`.padStart(3, '0');
 }
 
@@ -267,19 +268,36 @@ function revealField(state, button) {
     return true;
 }
 
+function gridValues(widthInput, heightInput, minesInput) {
+    const width = Math.min(20, Math.max(5, Number(widthInput.value) || 10));
+    const height = Math.min(20, Math.max(5, Number(heightInput.value) || 12));
+    const minesCap = Math.min(99, width * height - 1);
+    const minesCount = Math.min(minesCap, Math.max(1, Number(minesInput.value) || 12 ));
+
+    return {
+        width,
+        height,
+        minesCount,
+    };
+}
+
 function main() {
-    const state = initGameState({
-        width: 10,
-        height: 12,
-        minesCount: 12,
-    });
+    const widthInput = document.getElementById('width');
+    const heightInput = document.getElementById('height');
+    const minesInput = document.getElementById('mines');
 
     const view = {
         minesLeft: document.getElementById('mines-left'),
         reset: document.getElementById('reset'),
         timer: document.getElementById('timer'),
         grid: document.getElementById('grid'),
-    }
+    };
+
+    const state = initGameState(gridValues(widthInput, heightInput, minesInput));
+
+    widthInput.addEventListener('input', () => restartGame(view, state, widthInput, heightInput, minesInput));
+    heightInput.addEventListener('input', () => restartGame(view, state, widthInput, heightInput, minesInput));
+    minesInput.addEventListener('input', () => restartGame(view, state, widthInput, heightInput, minesInput));
 
     createFieldButtons(view, state);
     initView(view, state);
