@@ -1,5 +1,6 @@
 # lynns minesweeper
 a minesweeper game using vanilla javascript, html 5, and css 3
+> url: https://lynnnguyen3219.github.io/lynns-minesweeper/
 
 <img src= images\demo.png>
 
