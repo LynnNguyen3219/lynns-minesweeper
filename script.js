@@ -230,7 +230,7 @@ function gameOver(view, state) {
     state.isGameOver = true;
 
     for (const button of view.grid.children) {
-        const {x,y} = getButtonPosition(button);
+        const { x, y } = getButtonPosition(button);
 
         if (state.fields[y][x] === -1) {
             revealField(state, button);
